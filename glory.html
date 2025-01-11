@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bubble Flip Game</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
+    #gameCanvas { border: 2px solid black; }
+  </style>
+</head>
+<body>
+
+<h1>Bubble Flip Game</h1>
+<p>Click a bubble to flip it!</p>
+<canvas id="gameCanvas" width="800" height="600"></canvas>
+
+<script>
+  const canvas = document.getElementById('gameCanvas');
+  const ctx = canvas.getContext('2d');
+  
+  const bubbleSize = 50;
+  const bubbleSpacing = 10;
+  const colors = ['red', 'green', 'blue'];
+  let bubbles = [];
+
+  // Generate bubbles
+  for (let y = 0; y < canvas.height; y += bubbleSize + bubbleSpacing) {
+    for (let x = 0; x < canvas.width; x += bubbleSize + bubbleSpacing) {
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      bubbles.push({ x, y, color, flipped: false });
+    }
+  }
+
+  // Draw bubbles
+  function drawBubbles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    bubbles.forEach(bubble => {
+      ctx.fillStyle = bubble.flipped ? '#FFFFFF' : bubble.color;
+      ctx.fillRect(bubble.x, bubble.y, bubbleSize, bubbleSize);
+    });
+  }
+
+  // Handle click event to flip bubbles
+  canvas.addEventListener('click', (e) => {
+    const x = e.offsetX;
+    const y = e.offsetY;
+    bubbles.forEach(bubble => {
+      if (x > bubble.x && x < bubble.x + bubbleSize && y > bubble.y && y < bubble.y + bubbleSize) {
+        bubble.flipped = !bubble.flipped;
+        drawBubbles();
+      }
+    });
+  });
+
+  // Initial drawing
+  drawBubbles();
+</script>
+
+</body>
+</html>
